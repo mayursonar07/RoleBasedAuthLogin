@@ -10,7 +10,7 @@ export interface User {
     registerSP: (serviceProviderData: RegisterSPData) => Promise<boolean>;
     updateUserProfile: (profileData: UpdateUserData) => Promise<boolean>;
     updateSPProfile: (profileData: UpdateUserData) => Promise<boolean>;
-
+    loading: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     loginForSP: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
