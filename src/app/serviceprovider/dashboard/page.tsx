@@ -13,7 +13,7 @@ const ServiceProviderDashboard = () => {
     if (!loading) {
       if (!user) {
         router.push("/");
-      } else if (user.role !== "serviceprovider") {
+      } else if (user.role !== "serviceProvider") {
         router.push("/user/dashboard");
       }
     }

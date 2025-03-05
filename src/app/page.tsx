@@ -16,7 +16,7 @@ export default function Home() {
     if (!loading) {
       if (!user) {
         router.push("/");
-      } else if (user.role === "serviceprovider") {
+      } else if (user.role === "serviceProvider") {
         router.push("/serviceprovider/dashboard");      
       } else if (user.role === "user") {
         router.push("/user/dashboard");

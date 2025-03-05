@@ -36,6 +36,11 @@ const Header = () => {
     setIsSPLoginModalOpen(true);
   };
 
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    logout("user11@sample.com");
+  };
+
   useEffect(() => {
     const handleClickOutside =(event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -150,7 +155,7 @@ const Header = () => {
                       <a href="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                           Settings
                       </a>
-                      <a href="#" onClick={logout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      <a href="#" onClick={handleLogout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                           Logout
                       </a>
                     </div>
@@ -190,7 +195,7 @@ const Header = () => {
                   <a href="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                       Settings
                   </a>
-                  <a href="#" onClick={logout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <a href="#" onClick={handleLogout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                       Logout
                   </a>
               </div>

@@ -38,7 +38,11 @@ export const useUserRegistration = () => {
         fullname: formData.fullname,
       });
 
-      console.log("User registered:", response.data);
+      if (response.status !== 200) {
+        setError("User Registration failed. Try again.");
+        return;
+      }
+      console.log("User registered:", response);
 
       const loginSuccess = await login(formData.email, formData.password);
       if (loginSuccess) {

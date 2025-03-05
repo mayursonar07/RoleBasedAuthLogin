@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "@/app/utils/axiosInstance";
-import { User, AuthContextType, RegisterUserData, UpdateUserData, RegisterSPData } from "../../types/authTypes";
+import { User, AuthContextType, RegisterUserData, UpdateUserData, RegisterSPData, ChatResponse, RegisterAPIResponse } from "../../types/authTypes";
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
 
@@ -106,32 +106,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const registerUser = async (userData: RegisterUserData): Promise<boolean> => {
-    try {
-      await api.post("/register-user", userData);
-      return true;
-    } catch (error) {
-      console.error("User registration failed:", error);
-      return false;
-    }
+  const registerUser = async (userData: RegisterUserData): Promise<RegisterAPIResponse> => {
+    const response = await api.post("/register-user", userData);
+    return response.data;
   };
   
-  const registerSP = async (serviceProviderData: RegisterSPData): Promise<boolean> => {
-    return await api.post("/register-service-provider", serviceProviderData);
+  const registerSP = async (serviceProviderData: RegisterSPData): Promise<RegisterAPIResponse> => {
+    const response = await api.post("/register-service-provider", serviceProviderData);
+    return response.data;
+  };
+
+  const callChatService = async (message: string): Promise<ChatResponse> => {
+    const response = await api.post("/chat", { email: "user11@sample.com", message: message });
+    return response.data;
   };
 
   // LOGOUT FUNCTION
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    Cookies.remove('user');
-    setUser(null);
-    router.push("/"); // Redirect to homepage
+  const logout = async (email: string): Promise<void> => {
+    try {
+      const response = await api.post("/logout", {email: email});
+      if (!response) {
+        throw new Error("Logout failed");
+      }
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      Cookies.remove('user');
+      setUser(null);
+      router.push("/"); // Redirect to homepage
+  
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+    
   };
 
   return (
     <AuthContext.Provider value={
-      { user, loading, registerUser, registerSP, login, loginForSP, updateUserProfile, updateSPProfile, logout }
+      { user, loading, callChatService, registerUser, registerSP, login, loginForSP, updateUserProfile, updateSPProfile, logout }
     }>
       {children}
     </AuthContext.Provider>
